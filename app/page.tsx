@@ -1,42 +1,35 @@
 "use client";
-import { ChangeEvent, useState } from "react";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { Character } from "@/_component/Character";
+import { Chat } from "@/_component/Chat";
+import { useState } from "react";
 
-export default function Home() {
-  const [Input, setInput] = useState({
-    role: "",
-    character: "",
-    content: "",
-  });
-  const genAI = new GoogleGenerativeAI(
-    "AIzaSyB2Re_dW85CES042UKKDvOVmVwDYCGDpec"
-  );
-  const ai = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+const Home = () => {
+  const [Inputvalue, setInputValue] = useState("");
+
   const createChat = async () => {
     await fetch("/api/user", {
       method: "POST",
-      body: JSON.stringify({
-        role: Input.role,
-        character: Input.character,
-        content: Input.content,
-      }),
+      body: JSON.stringify({  }),
     });
   };
-  const handleAi = (e: ChangeEvent<HTMLInputElement>) => {
-    // const {role,character,content}=
+
+  const SendChat = async () => {
+    await fetch("/api/user", {
+      method: "GET",
+    });
   };
+
   return (
     <div>
-      <div>hello</div>
+      <Chat />
+      <Character />
       <input
-        name="role"
-        value={Input.role}
-        onChange={(e) => {
-          handleAi(e);
-        }}
+        placeholder="ask what you want"
+        value={Inputvalue}
+        onChange={(e) => setInputValue(e.target.value)}
       />
-      <input name="character" value={Input.character} />
-      <input name="content" value={Input.content} />
+      <button onClick={SendChat}>Send</button>
     </div>
   );
-}
+};
+export default Home;
